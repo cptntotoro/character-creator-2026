@@ -459,9 +459,10 @@
       font-weight: 700;
     }
 
+    /* Сетка 2x2 для карточки персонажа */
     .card-content {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 25px;
     }
 
@@ -470,6 +471,8 @@
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
     }
 
     .card-section h3 {
@@ -478,47 +481,65 @@
       display: flex;
       align-items: center;
       font-size: 1.4rem;
+      flex-shrink: 0;
     }
 
     .card-section h3 i {
       margin-right: 10px;
     }
 
+    /* Характеристики */
+    .stat-container {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 5px;
+    }
+
     .stat-bar {
       display: flex;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      justify-content: space-between;
     }
 
     .stat-name {
-      width: 180px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-weight: 600;
+      font-size: 1.1rem;
     }
 
-    .stat-visual {
-      flex-grow: 1;
-      height: 20px;
-      background: var(--gray);
-      border-radius: 10px;
-      overflow: hidden;
-      margin: 0 15px;
+    .stat-icon {
+      font-size: 1.4rem;
     }
 
-    .stat-fill {
-      height: 100%;
-      background: linear-gradient(to right, var(--primary), var(--secondary));
-      border-radius: 10px;
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      font-family: var(--pixel-font);
+      min-width: 60px;
+      text-align: center;
+    }
+
+    /* Перки */
+    .perk-list-container {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 5px;
     }
 
     .perk-list {
       list-style-type: none;
+      flex: 1;
     }
 
     .perk-list li {
       padding: 10px 0;
       border-bottom: 1px dashed var(--gray);
       display: flex;
-      align-items: center;
+      align-items: flex-start;
     }
 
     .perk-list li:last-child {
@@ -528,6 +549,26 @@
     .perk-list i {
       color: var(--success);
       margin-right: 10px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .perk-list span {
+      line-height: 1.4;
+    }
+
+    /* Блоки баффа и предсказания */
+    .buff-box, .prediction-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .buff-box-content, .prediction-box-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .buff-box {
@@ -535,6 +576,7 @@
       padding: 20px;
       border-radius: 12px;
       border-left: 5px solid var(--accent);
+      height: 100%;
     }
 
     .buff-title {
@@ -543,11 +585,16 @@
       margin-bottom: 10px;
     }
 
+    .buff-box p, .prediction-box p {
+      line-height: 1.5;
+    }
+
     .prediction-box {
       background: linear-gradient(135deg, #fff8e6, #fffaf0);
       padding: 20px;
       border-radius: 12px;
       border-left: 5px solid var(--warning);
+      height: 100%;
     }
 
     .prediction-title {
@@ -636,6 +683,11 @@
 
       .card-content {
         grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .card-section {
+        min-height: auto;
       }
 
       .share-buttons {
@@ -1030,29 +1082,37 @@
         <div class="card-content">
             <div class="card-section">
                 <h3><i class="fas fa-chart-bar"></i> ХАРАКТЕРИСТИКИ</h3>
-                ${generateStatsHTML()}
+                <div class="stat-container">
+                    ${generateStatsHTML()}
+                </div>
             </div>
 
             <div class="card-section">
                 <h3><i class="fas fa-star"></i> ПЕРКИ НА 2026</h3>
-                <ul class="perk-list">
-                    ${generatePerksHTML()}
-                </ul>
+                <div class="perk-list-container">
+                    <ul class="perk-list">
+                        ${generatePerksHTML()}
+                    </ul>
+                </div>
             </div>
 
             <div class="card-section">
                 <h3><i class="fas fa-magic"></i> БАФФ НА ГОД</h3>
                 <div class="buff-box">
-                    <div class="buff-title">${buff.title}</div>
-                    <p>${buff.description}</p>
+                    <div class="buff-box-content">
+                        <div class="buff-title">${buff.title}</div>
+                        <p>${buff.description}</p>
+                    </div>
                 </div>
             </div>
 
             <div class="card-section">
                 <h3><i class="fas fa-crystal-ball"></i> ПРЕДСКАЗАНИЕ НА 2026</h3>
                 <div class="prediction-box">
-                    <div class="prediction-title">Что тебя ждёт:</div>
-                    <p>${prediction}</p>
+                    <div class="prediction-box-content">
+                        <div class="prediction-title">Что тебя ждёт:</div>
+                        <p>${prediction}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1077,17 +1137,16 @@
     let html = '';
     statsData.forEach(stat => {
       const value = stats[stat.id];
-      const percentage = (value / 5) * 100;
 
       html += `
-                    <div class="stat-bar">
-                        <div class="stat-name">${stat.icon} ${stat.name}</div>
-                        <div class="stat-visual">
-                            <div class="stat-fill" style="width: ${percentage}%"></div>
-                        </div>
-                        <div class="stat-value">${value}/5</div>
-                    </div>
-                `;
+      <div class="stat-bar">
+        <div class="stat-name">
+          <span class="stat-icon">${stat.icon}</span>
+          <span>${stat.name}</span>
+        </div>
+        <div class="stat-value">${value}/5</div>
+      </div>
+    `;
     });
     return html;
   }
@@ -1098,7 +1157,7 @@
     selectedPerks.forEach(perkId => {
       const perk = perksData.find(p => p.id === perkId);
       if (perk) {
-        html += `<li><i class="fas fa-check-circle"></i> ${perk.name}</li>`;
+        html += `<li><i class="fas fa-check-circle"></i> <span>${perk.name}</span></li>`;
       }
     });
     return html;
@@ -1204,14 +1263,9 @@
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
 
-    // Размеры для разных устройств
-    if (isMobile) {
-      canvas.width = 800;
-      canvas.height = 1400 + (selectedPerks.length * 35);
-    } else {
-      canvas.width = 1000;
-      canvas.height = 1200 + (selectedPerks.length * 30);
-    }
+    // Устанавливаем фиксированные размеры
+    canvas.width = 1000;
+    canvas.height = 1400;
 
     // 1. Фон карточки
     ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
@@ -1243,11 +1297,11 @@
     ctx.closePath();
     ctx.fill();
 
-    let currentY = cardY + 60;
+    let currentY = cardY + 70;
 
     // 2. Заголовок
     ctx.fillStyle = '#2d1b69';
-    ctx.font = isMobile ? 'bold 36px "Courier New", monospace' : 'bold 42px "Courier New", monospace';
+    ctx.font = 'bold 42px "Courier New", monospace';
     ctx.textAlign = 'center';
 
     let displayName = name.toUpperCase();
@@ -1266,113 +1320,86 @@
     // Дополнительный текст (девиз)
     const motto = generateMotto();
     ctx.fillStyle = '#ff6b6b';
-    ctx.font = isMobile ? 'bold 20px Arial' : 'bold 24px Arial';
-
-    let displayMotto = motto;
-    const maxMottoWidth = cardWidth - 120;
-    let mottoMetrics = ctx.measureText(displayMotto);
-
-    if (mottoMetrics.width > maxMottoWidth) {
-      while (ctx.measureText(displayMotto + '...').width > maxMottoWidth && displayMotto.length > 3) {
-        displayMotto = displayMotto.substring(0, displayMotto.length - 1);
-      }
-      displayMotto += '...';
-    }
-
-    ctx.fillText(displayMotto, cardX + cardWidth / 2, currentY + (isMobile ? 35 : 40));
+    ctx.font = 'bold 24px Arial';
+    ctx.fillText(motto, cardX + cardWidth / 2, currentY + 40);
 
     // Разделитель
+    currentY += 80;
     ctx.strokeStyle = '#e0e0e0';
     ctx.setLineDash([5, 3]);
     ctx.beginPath();
-    ctx.moveTo(cardX + 60, currentY + (isMobile ? 65 : 70));
-    ctx.lineTo(cardX + cardWidth - 60, currentY + (isMobile ? 65 : 70));
+    ctx.moveTo(cardX + 60, currentY);
+    ctx.lineTo(cardX + cardWidth - 60, currentY);
     ctx.stroke();
     ctx.setLineDash([]);
 
-    currentY += isMobile ? 120 : 110;
+    // Отступ после разделителя
+    currentY += 70;
 
-    // 3. Характеристики - В ОДИН СТОЛБЕЦ
+    // 3. Характеристики
     ctx.fillStyle = '#8a2be2';
-    ctx.font = isMobile ? 'bold 26px Arial' : 'bold 30px Arial';
+    ctx.font = 'bold 30px Arial';
     ctx.textAlign = 'left';
     ctx.fillText('ХАРАКТЕРИСТИКИ', cardX + 60, currentY);
 
-    currentY += isMobile ? 45 : 50;
+    currentY += 50;
 
     // Все характеристики в один столбец
     const columnX = cardX + 60;
     const columnWidth = cardWidth - 120;
+    const statSpacing = 55; // Одинаковый интервал между характеристиками
 
     for (let i = 0; i < statsData.length; i++) {
       const stat = statsData[i];
       const value = stats[stat.id];
-      const statY = currentY + i * (isMobile ? 65 : 70);
+      const statY = currentY + i * statSpacing;
 
-      // Эмодзи и название
+      // Эмодзи
       ctx.fillStyle = '#333';
-      ctx.font = isMobile ? 'bold 20px Arial' : 'bold 22px Arial';
+      ctx.font = '30px Arial';
       ctx.fillText(stat.icon, columnX, statY);
 
       // Название характеристики
-      ctx.font = isMobile ? '18px Arial' : '20px Arial';
+      ctx.font = 'bold 20px Arial';
       ctx.fillText(stat.name, columnX + 45, statY);
 
-      // Полоска прогресса
-      const barWidth = columnWidth * 0.45; // 45% ширины колонки
-      const barHeight = isMobile ? 12 : 14;
-      const barX = columnX + 220;
-      const barY = statY - (isMobile ? 8 : 9);
-
-      // Фон полоски
-      ctx.fillStyle = '#e0e0e0';
-      drawRoundedRect(ctx, barX, barY, barWidth, barHeight, 7);
-      ctx.fill();
-
-      // Заполненная часть
-      const fillWidth = (value / 5) * barWidth;
-      const barGradient = ctx.createLinearGradient(barX, barY, barX + fillWidth, barY);
-      barGradient.addColorStop(0, '#8a2be2');
-      barGradient.addColorStop(1, '#9370db');
-      ctx.fillStyle = barGradient;
-      drawRoundedRect(ctx, barX, barY, fillWidth, barHeight, 7);
-      ctx.fill();
-
-      // Значение
+      // Значение (справа)
       ctx.fillStyle = '#8a2be2';
-      ctx.font = isMobile ? 'bold 26px "Courier New", monospace' : 'bold 30px "Courier New", monospace';
-      const valueX = barX + barWidth + 20;
+      ctx.font = 'bold 30px "Courier New", monospace';
+      const valueX = columnX + columnWidth - 80;
       ctx.fillText(`${value}/5`, valueX, statY + 5);
     }
 
-    currentY += statsData.length * (isMobile ? 65 : 70) + (isMobile ? 30 : 35);
+    // Отступ после характеристик
+    currentY += statsData.length * statSpacing + 40;
 
-    // 4. Перки - В ОДИН СТОЛБЕЦ
+    // 4. Перки
     ctx.fillStyle = '#8a2be2';
-    ctx.font = isMobile ? 'bold 26px Arial' : 'bold 30px Arial';
+    ctx.font = 'bold 30px Arial';
     ctx.fillText('ПЕРКИ НА 2026', cardX + 60, currentY);
 
-    currentY += isMobile ? 45 : 50;
+    currentY += 50;
 
     if (selectedPerks.length > 0) {
       // Все перки в один столбец
       const perkColumnX = cardX + 60;
-      const perkItemHeight = isMobile ? 35 : 32;
+      const perkItemHeight = 32;
+      const perkSpacing = 35; // Одинаковый интервал между перками
 
       for (let i = 0; i < selectedPerks.length; i++) {
         const perk = perksData.find(p => p.id === selectedPerks[i]);
         if (!perk) continue;
 
-        const perkY = currentY + i * perkItemHeight;
+        const perkY = currentY + i * perkSpacing;
 
         // Галочка
         ctx.fillStyle = '#4CAF50';
-        ctx.font = isMobile ? 'bold 18px Arial' : 'bold 20px Arial';
+        ctx.font = 'bold 18px Arial';
         ctx.fillText('✓', perkColumnX, perkY);
 
         // Название перка
         ctx.fillStyle = '#333';
-        ctx.font = isMobile ? '17px Arial' : '19px Arial';
+        ctx.font = '19px Arial';
 
         let perkName = perk.name;
         const maxPerkNameWidth = cardWidth - 140;
@@ -1388,27 +1415,28 @@
         ctx.fillText(perkName, perkColumnX + 30, perkY);
       }
 
-      currentY += selectedPerks.length * perkItemHeight + (isMobile ? 35 : 40);
+      // Отступ после перков
+      currentY += selectedPerks.length * perkSpacing + 40;
     } else {
       ctx.fillStyle = '#999';
-      ctx.font = isMobile ? 'italic 18px Arial' : 'italic 20px Arial';
+      ctx.font = 'italic 20px Arial';
       ctx.fillText('Перки не выбраны', cardX + 60, currentY);
-      currentY += isMobile ? 50 : 55;
+      currentY += 60;
     }
 
     // 5. Бафф на год
     ctx.fillStyle = '#ff6b6b';
-    ctx.font = isMobile ? 'bold 26px Arial' : 'bold 30px Arial';
+    ctx.font = 'bold 30px Arial';
     ctx.fillText('БАФФ НА ГОД', cardX + 60, currentY);
 
-    currentY += isMobile ? 35 : 40;
+    currentY += 40;
 
     // Рисуем блок баффа
     const buff = generateBuff();
 
     // Фон баффа
     ctx.fillStyle = '#e6f7ff';
-    const buffHeight = isMobile ? 110 : 130;
+    const buffHeight = 110;
     drawRoundedRect(ctx, cardX + 60, currentY, cardWidth - 120, buffHeight, 12);
     ctx.fill();
 
@@ -1418,16 +1446,16 @@
 
     // Заголовок баффа
     ctx.fillStyle = '#ff6b6b';
-    ctx.font = isMobile ? 'bold 22px Arial' : 'bold 26px Arial';
-    ctx.fillText(buff.title, cardX + 80, currentY + (isMobile ? 35 : 40));
+    ctx.font = 'bold 24px Arial';
+    ctx.fillText(buff.title, cardX + 80, currentY + 35);
 
     // Описание баффа
     ctx.fillStyle = '#333';
-    ctx.font = isMobile ? '17px Arial' : '19px Arial';
+    ctx.font = '18px Arial';
 
     const description = buff.description;
     const maxWidth = cardWidth - 160;
-    let descY = currentY + (isMobile ? 65 : 75);
+    let descY = currentY + 70;
 
     const words = description.split(' ');
     let line = '';
@@ -1438,23 +1466,83 @@
       if (metrics.width > maxWidth && n > 0) {
         ctx.fillText(line, cardX + 80, descY);
         line = words[n] + ' ';
-        descY += isMobile ? 25 : 28;
+        descY += 25;
       } else {
         line = testLine;
       }
     }
     ctx.fillText(line, cardX + 80, descY);
 
-    currentY += buffHeight + (isMobile ? 30 : 35);
+    // Отступ после баффа
+    currentY += buffHeight + 70;
 
-    // 6. Подпись - ставим ближе к контенту
+    // 6. Предсказание
+    ctx.fillStyle = '#ff9800';
+    ctx.font = 'bold 30px Arial';
+    ctx.fillText('ПРЕДСКАЗАНИЕ НА 2026', cardX + 60, currentY);
+
+    currentY += 40;
+
+    // Рисуем блок предсказания
+    const prediction = generatePrediction();
+
+    // Фон предсказания
+    ctx.fillStyle = '#fff8e6';
+    const predictionHeight = 100;
+    drawRoundedRect(ctx, cardX + 60, currentY, cardWidth - 120, predictionHeight, 12);
+    ctx.fill();
+
+    // Левая граница
+    ctx.fillStyle = '#ff9800';
+    ctx.fillRect(cardX + 60, currentY, 5, predictionHeight);
+
+    // Заголовок предсказания
+    ctx.fillStyle = '#ff9800';
+    ctx.font = 'bold 22px Arial';
+    ctx.fillText('Что тебя ждёт:', cardX + 80, currentY + 32);
+
+    // Текст предсказания
+    ctx.fillStyle = '#333';
+    ctx.font = '17px Arial';
+
+    const predictionText = prediction;
+    const maxPredictionWidth = cardWidth - 160;
+    let predY = currentY + 62;
+
+    const predWords = predictionText.split(' ');
+    let predLine = '';
+    for (let n = 0; n < predWords.length; n++) {
+      const testPredLine = predLine + predWords[n] + ' ';
+      const predMetrics = ctx.measureText(testPredLine);
+
+      if (predMetrics.width > maxPredictionWidth && n > 0) {
+        ctx.fillText(predLine, cardX + 80, predY);
+        predLine = predWords[n] + ' ';
+        predY += 22;
+      } else {
+        predLine = testPredLine;
+      }
+    }
+    ctx.fillText(predLine, cardX + 80, predY);
+
+    // Отступ после предсказания
+    currentY += predictionHeight + 60;
+
+    // 7. Подпись - проверяем, чтобы не наезжала на контент
     ctx.fillStyle = '#666';
-    ctx.font = isMobile ? '14px Arial' : '16px Arial';
+    ctx.font = '16px Arial';
     ctx.textAlign = 'center';
-    const footerY = Math.min(currentY + 40, cardY + cardHeight - 40);
-    ctx.fillText('Сделано с ❤️ для Алисы и Миши', cardX + cardWidth / 2, footerY);
 
-    // 7. Скачиваем изображение
+    // Убеждаемся, что подпись помещается
+    const minFooterY = cardY + cardHeight - 40;
+    const footerY = Math.min(currentY, minFooterY);
+
+    // Рисуем подпись только если есть место
+    if (footerY < cardY + cardHeight - 20) {
+      ctx.fillText('Сделано с ❤️ для Алисы и Миши', cardX + cardWidth / 2, footerY);
+    }
+
+    // 8. Скачиваем изображение
     canvas.toBlob(function (blob) {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
