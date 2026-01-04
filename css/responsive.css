@@ -1,0 +1,85 @@
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .section {
+        padding: 20px 15px;
+    }
+
+    .stats-container {
+        grid-template-columns: 1fr;
+    }
+
+    .perks-container {
+        grid-template-columns: 1fr;
+    }
+
+    .points-container {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .stat {
+        padding: 15px;
+    }
+
+    .stat-icon {
+        font-size: 2rem;
+        width: 50px;
+    }
+
+    .stat-info h3 {
+        font-size: 1.2rem;
+    }
+
+    .card-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .card-section {
+        min-height: auto;
+    }
+
+    .share-buttons {
+        flex-direction: column;
+    }
+
+    #generate-btn {
+        padding: 15px 30px;
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.7rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .section {
+        padding: 20px 15px;
+    }
+
+    .stat-buttons {
+        align-self: center;
+    }
+
+    .section-title {
+        font-size: 1.3rem;
+    }
+
+    #generate-btn {
+        width: 100%;
+        padding: 15px;
+    }
+}

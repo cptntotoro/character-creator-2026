@@ -1,0 +1,172 @@
+/* Шапка */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    background: var(--card-bg);
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(to right, var(--primary), var(--accent), var(--primary));
+}
+
+h1 {
+    color: var(--dark);
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: var(--pixel-font);
+}
+
+.subtitle {
+    color: var(--dark-gray);
+    font-size: 1.2rem;
+}
+
+/* Основные разделы */
+.section {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: var(--shadow);
+    border: 2px solid var(--gray);
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    color: var(--primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.section-title i {
+    margin-right: 10px;
+    font-size: 1.8rem;
+}
+
+.section-subtitle {
+    margin-left: 10px;
+    font-size: 1rem;
+    color: var(--dark-gray);
+    font-weight: normal;
+}
+
+/* Ввод имени */
+.name-input {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.name-input label {
+    font-weight: 600;
+    color: var(--dark);
+}
+
+#character-name {
+    padding: 15px;
+    border: 3px solid var(--secondary);
+    border-radius: 12px;
+    font-size: 1.2rem;
+    outline: none;
+    transition: all 0.3s;
+    font-family: var(--pixel-font);
+}
+
+#character-name:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.2);
+}
+
+/* Очки */
+.points-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to right, #8a2be2, #9370db);
+    color: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    margin-bottom: 25px;
+    box-shadow: var(--shadow);
+}
+
+.points-left {
+    font-size: 2.5rem;
+    font-weight: 700;
+    font-family: var(--pixel-font);
+    color: white;
+}
+
+.points-label {
+    font-size: 1.2rem;
+}
+
+.points-warning {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+/* Кнопка генерации */
+.generate-btn-container {
+    text-align: center;
+    margin: 30px 0;
+}
+
+#generate-btn {
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    padding: 20px 50px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 10px 20px rgba(138, 43, 226, 0.3);
+    font-family: var(--pixel-font);
+    letter-spacing: 1px;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#generate-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(138, 43, 226, 0.4);
+}
+
+#generate-btn:active {
+    transform: translateY(0);
+}
+
+#generate-btn:disabled {
+    background: var(--gray);
+    color: var(--dark-gray);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Футер */
+footer {
+    text-align: center;
+    color: white;
+    margin-top: 40px;
+    padding: 20px;
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
+
