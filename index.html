@@ -909,10 +909,8 @@
     document.addEventListener('DOMContentLoaded', function () {
         initStats();
         initPerks();
+        initEventListeners();
         updateUI();
-
-        // Слушатель для имени
-        document.getElementById('character-name').addEventListener('input', updateGenerateButton);
     });
 
     // Инициализация характеристик
@@ -968,6 +966,22 @@
 
             container.appendChild(perkElement);
         });
+    }
+
+    function initEventListeners() {
+        try {
+            const generateBtn = document.getElementById('generate-btn');
+            if (generateBtn) {
+                generateBtn.addEventListener('click', generateCharacter);
+            }
+
+            const nameInput = document.getElementById('character-name');
+            if (nameInput) {
+                nameInput.addEventListener('input', updateGenerateButton);
+            }
+        } catch (error) {
+            console.error('Ошибка инициализации слушателей событий:', error);
+        }
     }
 
     // Увеличение характеристики
@@ -1027,7 +1041,10 @@
     // Обновление интерфейса
     function updateUI() {
         // Обновляем очки
-        document.getElementById('points-left').textContent = pointsLeft;
+        const pointsLeftElement = document.getElementById('points-left');
+        if (pointsLeftElement) {
+            pointsLeftElement.textContent = pointsLeft;
+        }
 
         // Обновляем значения характеристик
         statsData.forEach(stat => {
@@ -1035,25 +1052,20 @@
             const decreaseBtn = document.getElementById(`decrease-${stat.id}`);
             const increaseBtn = document.getElementById(`increase-${stat.id}`);
 
-            valueElement.textContent = stats[stat.id];
+            if (valueElement) {
+                valueElement.textContent = stats[stat.id];
+            }
 
-            // Обновляем состояние кнопок
-            decreaseBtn.disabled = stats[stat.id] <= 1;
-            increaseBtn.disabled = pointsLeft <= 0 || stats[stat.id] >= 5;
+            if (decreaseBtn) {
+                decreaseBtn.disabled = stats[stat.id] <= 1;
+                decreaseBtn.style.opacity = decreaseBtn.disabled ? '0.5' : '1';
+            }
+
+            if (increaseBtn) {
+                increaseBtn.disabled = pointsLeft <= 0 || stats[stat.id] >= 5;
+                increaseBtn.style.opacity = increaseBtn.disabled ? '0.5' : '1';
+            }
         });
-
-        // Визуальная индикация для недоступных кнопок
-        if (decreaseBtn.disabled) {
-            decreaseBtn.style.opacity = '0.5';
-        } else {
-            decreaseBtn.style.opacity = '1';
-        }
-
-        if (increaseBtn.disabled) {
-            increaseBtn.style.opacity = '0.5';
-        } else {
-            increaseBtn.style.opacity = '1';
-        }
 
         // Обновляем кнопку генерации
         updateGenerateButton();
@@ -1067,8 +1079,10 @@
         // Можно генерировать, если имя введено и распределены все очки
         if (name.length > 0 && pointsLeft === 0) {
             generateBtn.disabled = false;
+            generateBtn.style.cursor = 'pointer';
         } else {
             generateBtn.disabled = true;
+            generateBtn.style.cursor = 'not-allowed';
         }
     }
 
