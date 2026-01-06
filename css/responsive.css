@@ -43,7 +43,7 @@
         min-height: auto;
     }
 
-    .share-buttons {
+    .action-buttons {
         flex-direction: column;
     }
 

@@ -23,7 +23,14 @@ export function generateStatsHTML() {
 
 export function generateCharacter(name) {
     const characterCard = document.getElementById('character-card');
+
+    console.log('Элемент character-card найден:', characterCard ? 'Да' : 'Нет');
+    console.log('Карточка:', characterCard);
+
     if (!characterCard) return;
+
+    console.log('Содержимое карточки:', characterCard.innerHTML.substring(0, 200) + '...');
+    console.log('Стиль отображения карточки:', characterCard.style.display);
 
     // Определяем самую высокую характеристику
     let highestStat = { name: '', value: 0 };
@@ -88,11 +95,11 @@ export function generateCharacter(name) {
             </div>
         </div>
 
-        <div class="share-buttons">
-            <button class="share-btn save" onclick="window.saveCharacter()">
+        <div class="action-buttons">
+            <button class="action-btn save" onclick="window.saveCharacter()">
                 <i class="fas fa-save"></i> Сохранить карточку
             </button>
-            <button class="share-btn reset" onclick="window.resetCharacter()">
+            <button class="action-btn reset" onclick="window.resetCharacter()">
                 <i class="fas fa-redo"></i> Создать нового
             </button>
         </div>
@@ -101,4 +108,19 @@ export function generateCharacter(name) {
     // Показываем карточку
     characterCard.style.display = 'block';
     characterCard.scrollIntoView({ behavior: 'smooth' });
+
+    // После создания карточки добавьте:
+    console.log('Карточка создана, HTML длина:', characterCard.innerHTML.length);
+    console.log('Содержит ли кнопки:', characterCard.innerHTML.includes('action-buttons'));
+
+    // Проверяем сразу после создания
+    setTimeout(() => {
+        const buttons = characterCard.querySelector('.action-buttons');
+        console.log('Кнопки в DOM:', buttons);
+        if (buttons) {
+            console.log('Кнопки innerHTML:', buttons.innerHTML);
+        }
+    }, 0);
+
+    console.log('=== КОНЕЦ generateCharacter ===');
 }

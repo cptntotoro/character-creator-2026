@@ -526,14 +526,14 @@ body {
     margin-bottom: 10px;
 }
 
-.share-buttons {
+.action-buttons {
     display: flex;
     justify-content: center;
     gap: 15px;
     margin-top: 30px;
 }
 
-.share-btn {
+.action-btn {
     padding: 12px 25px;
     border: none;
     border-radius: 30px;
@@ -546,17 +546,17 @@ body {
     transition: all 0.3s;
 }
 
-.share-btn.save {
+.action-btn.save {
     background: linear-gradient(to right, var(--primary), var(--secondary));
     color: white;
 }
 
-.share-btn.reset {
+.action-btn.reset {
     background: linear-gradient(to right, var(--accent), #ff8e8e);
     color: white;
 }
 
-.share-btn:hover {
+.action-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }

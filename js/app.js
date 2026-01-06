@@ -4,6 +4,11 @@ import { generateCharacter } from './modules/character.js';
 import { saveCharacter } from './modules/canvas.js';
 import { updateGenerateButton } from './modules/utils.js';
 
+console.log('=== ИМПОРТЫ ===');
+console.log('generateCharacter:', typeof generateCharacter);
+console.log('saveCharacter:', typeof saveCharacter);
+console.log('resetCharacter:', typeof resetCharacter);
+
 // Инициализация слушателей событий
 function initEventListeners() {
     try {
@@ -11,6 +16,15 @@ function initEventListeners() {
         if (generateBtn) {
             generateBtn.addEventListener('click', () => {
                 const name = document.getElementById('character-name').value.trim() || 'Анонимный Оптимист';
+                console.log('КЛИК: генерация персонажа с именем:', name);
+
+                // Проверяем, есть ли функция
+                if (typeof generateCharacter !== 'function') {
+                    console.error('generateCharacter не является функцией!');
+                    return;
+                }
+
+                console.log('Вызываем generateCharacter...');
                 generateCharacter(name);
             });
         }
